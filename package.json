@@ -21,9 +21,9 @@
   "license": "MIT",
   "commands": [
     {
-      "name": "search-samples",
-      "title": "Search Samples",
-      "description": "Search for samples",
+      "name": "search-sounds",
+      "title": "Search for Sounds",
+      "description": "Search for sounds by genres",
       "mode": "view"
     },
     {
@@ -35,20 +35,20 @@
   ],
   "tools": [
     {
-      "name": "ask-soundraw",
-      "title": "Ask Soundraw",
-      "description": "Allows searching samples via prompt by automagically guessing which genres the user wants from the pool of possible genres"
+      "name": "ask-sounds",
+      "title": "Ask for Sounds",
+      "description": "Allows searching sounds via prompt by automagically guessing which genres the user wants from the pool of possible genres"
     }
   ],
   "ai": {
-    "instructions": "Use the ask-soundraw tool to search for audio samples. When a user asks for music, sounds, or samples, interpret their natural language query and use the tool to find matching samples. The tool automatically maps queries to appropriate genres from the available pool.",
+    "instructions": "Use the ask-sounds tool to search for audio samples. When a user asks for music, sounds, or samples, interpret their natural language query and use the tool to find matching samples. The tool automatically maps queries to appropriate genres from the available pool.",
     "evals": [
       {
         "input": "@sound-search find me some energetic electronic music",
         "expected": [
           {
             "callsTool": {
-              "name": "ask-soundraw",
+              "name": "ask-sounds",
               "arguments": {
                 "query": {
                   "includes": "energetic"
@@ -64,7 +64,7 @@
         "expected": [
           {
             "callsTool": {
-              "name": "ask-soundraw",
+              "name": "ask-sounds",
               "arguments": {
                 "query": {
                   "includes": "jazz"
@@ -80,7 +80,7 @@
         "expected": [
           {
             "callsTool": {
-              "name": "ask-soundraw",
+              "name": "ask-sounds",
               "arguments": {
                 "query": {
                   "includes": "ambient"
@@ -96,7 +96,7 @@
         "expected": [
           {
             "callsTool": {
-              "name": "ask-soundraw",
+              "name": "ask-sounds",
               "arguments": {
                 "query": {
                   "includes": "rock"
@@ -112,7 +112,7 @@
         "expected": [
           {
             "callsTool": {
-              "name": "ask-soundraw",
+              "name": "ask-sounds",
               "arguments": {
                 "query": {
                   "includes": "hip hop"
@@ -128,7 +128,7 @@
         "expected": [
           {
             "callsTool": {
-              "name": "ask-soundraw",
+              "name": "ask-sounds",
               "arguments": {
                 "query": {
                   "includes": "cinematic"

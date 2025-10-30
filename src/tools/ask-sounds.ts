@@ -14,7 +14,7 @@ type Input = {
 /**
  * Search for audio samples by interpreting the user's natural language query
  * and automatically matching it to appropriate genres from the available genre pool.
- * Automatically opens the search-samples command with the matched genres pre-selected.
+ * Automatically opens the search-sounds command with the matched genres pre-selected.
  */
 export default async function (input: Input) {
   const { query } = input;
@@ -79,13 +79,13 @@ Available genre keys: ${JSON.stringify(genreList)}`;
     // Validate genres are actually available
     selectedGenres = selectedGenres.filter((key) => genreList.includes(key));
 
-    // Create deeplink to search-samples command with genres
+    // Create deeplink to search-sounds command with genres
     // Pass genres as comma-separated string since Raycast deeplinks don't support arrays directly
     const deeplink = createDeeplink({
       type: DeeplinkType.Extension,
       ownerOrAuthorName: "tokyo-ai-hackathon",
       extensionName: "sound-search",
-      command: "search-samples",
+      command: "search-sounds",
       arguments: {
         genres: selectedGenres.length > 0 ? selectedGenres.join(",") : "",
       },
