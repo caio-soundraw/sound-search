@@ -5,7 +5,7 @@ import { usePlaybackState } from "../lib/hooks";
 import { CopyFileAction } from "./actions/CopyFileAction";
 import { CopyUrlAction } from "./actions/CopyUrlAction";
 import { OpenInBrowserAction } from "./actions/OpenInBrowserAction";
-import { PlayStopAction } from "./actions/PlayStopAction";
+import { PlayStopAction, FavoriteActions, RecentActions } from "./actions/PlayStopAction";
 import * as fs from "fs";
 
 export function SampleItem({ sample, filePath }: { sample: Sample; filePath: string | null }) {
@@ -29,6 +29,8 @@ export function SampleItem({ sample, filePath }: { sample: Sample; filePath: str
           <CopyUrlAction sample={sample} />
           <OpenInBrowserAction sample={sample} />
           <PlayStopAction sample={sample} />
+          <FavoriteActions sample={sample} />
+          <RecentActions sample={sample} />
         </ActionPanel>
       }
     />

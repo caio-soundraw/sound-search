@@ -1,11 +1,12 @@
 import { useState, useEffect, useRef } from "react";
-import { Form, ActionPanel, Action, showToast, Icon, Toast, LaunchProps } from "@raycast/api";
+import { Form, ActionPanel, Action, showToast, Icon, Toast, LaunchProps, Color, List } from "@raycast/api";
 import { useForm, useCachedPromise } from "@raycast/utils";
 import { searchSamples, getAvailableGenres, SoundrawAPIError } from "./lib/soundraw";
 import { Sample } from "./lib/types";
 import { cleanupPlayback } from "./lib/audio";
 import { SamplesList } from "./components/SamplesList";
 import { cleanupOldTempFiles } from "./lib/file";
+import { useFavoritesRecents } from "./lib/hooks";
 
 type Values = {
   genres: string[];
@@ -15,12 +16,16 @@ type LaunchArguments = {
   genres?: string; // Comma-separated string of genre keys
 };
 
+export type SearchSource = "soundraw" | "favorites" | "recents";
+
 export default function Command(props: LaunchProps<{ arguments: LaunchArguments }>) {
   // Parse comma-separated genres string into array
   const launchGenresString = props.arguments?.genres || "";
   const launchGenres = launchGenresString ? launchGenresString.split(",").filter((g) => g.trim().length > 0) : [];
+
   const [hasSearched, setHasSearched] = useState(false);
   const [selectedGenres, setSelectedGenres] = useState<string[]>(launchGenres);
+  const [searchSource, setSearchSource] = useState<SearchSource>("soundraw");
 
   // Cleanup old temp files on command launch (older than 4 hours)
   useEffect(() => {
@@ -114,43 +119,85 @@ export default function Command(props: LaunchProps<{ arguments: LaunchArguments 
     setSelectedGenres([]);
   };
 
-  if (hasSearched) {
+  const { favoriteSamples = [], recentSamples = [] } = useFavoritesRecents();
+
+  // Determine visible samples based on search source
+  let visibleSamples: Sample[] = samples;
+  let sectionTitle = "Soundraw Samples";
+  let isShowingLocalSamples = false;
+
+  if (searchSource === "favorites") {
+    visibleSamples = favoriteSamples || [];
+    sectionTitle = "Favorite Samples";
+    isShowingLocalSamples = true;
+  } else if (searchSource === "recents") {
+    visibleSamples = recentSamples || [];
+    sectionTitle = "Recent Samples";
+    isShowingLocalSamples = true;
+  }
+
+  const dropdown = (
+    <List.Dropdown
+      tooltip="Change Source"
+      value={searchSource}
+      onChange={(v) => {
+        // Only update if it's a valid source
+        if (v === "soundraw" || v === "favorites" || v === "recents") {
+          setSearchSource(v as SearchSource);
+        }
+      }}
+    >
+      <List.Dropdown.Section>
+        <List.Dropdown.Item title="Soundraw" value="soundraw" icon={{ source: "soundraw.png" }} />
+      </List.Dropdown.Section>
+      <List.Dropdown.Section>
+        <List.Dropdown.Item title="Favorites" value="favorites" icon={{ source: Icon.Star, tintColor: Color.Yellow }} />
+        <List.Dropdown.Item title="Recent" value="recents" icon={{ source: Icon.Clock }} />
+      </List.Dropdown.Section>
+    </List.Dropdown>
+  );
+
+  // Show list view if searching OR if showing favorites/recents
+  if (hasSearched || isShowingLocalSamples) {
     return (
       <SamplesList
-        samples={samples}
-        isLoading={isLoading}
+        samples={visibleSamples}
+        isLoading={isLoading && !isShowingLocalSamples}
         onNewSearch={handleNewSearch}
         selectedGenres={selectedGenres}
         availableGenres={availableGenres}
+        searchBarAccessory={dropdown}
+        navigationTitle={sectionTitle}
       />
     );
   }
 
   return (
-    <Form
-      isLoading={isLoading || isLoadingGenres}
-      actions={
-        <ActionPanel>
-          <Action.SubmitForm onSubmit={handleSubmit} title="Search Samples" icon={Icon.MagnifyingGlass} />
-        </ActionPanel>
-      }
-    >
-      <Form.TagPicker
-        title="Genres"
-        placeholder="Select genres to search"
-        info="Choose one or more genres to find matching samples"
-        {...itemProps.genres}
+    <>
+      {dropdown}
+      <Form
+        isLoading={isLoading || isLoadingGenres}
+        actions={
+          <ActionPanel>
+            <Action.SubmitForm onSubmit={handleSubmit} title="Search Samples" icon={Icon.MagnifyingGlass} />
+          </ActionPanel>
+        }
       >
-        {Object.entries(availableGenres).map(([key, value]) => (
-          <Form.TagPicker.Item key={key} title={value} value={key} />
-        ))}
-      </Form.TagPicker>
-
-      {isLoadingGenres && <Form.Description text="Loading available genres..." />}
-
-      {!isLoadingGenres && Object.keys(availableGenres).length === 0 && (
-        <Form.Description text="No genres available. Please check your API connection." />
-      )}
-    </Form>
+        <Form.TagPicker
+          title="Genres"
+          placeholder="Select genres to search"
+          info="Choose one or more genres to find matching samples"
+          {...itemProps.genres}
+        >
+          {Object.entries(availableGenres).map(([key, value]) => (
+            <Form.TagPicker.Item key={key} title={value} value={key} />
+          ))}
+        </Form.TagPicker>
+        {isLoadingGenres && <Form.Description text="Loading available genres..." />}
+        {!isLoadingGenres && Object.keys(availableGenres).length === 0 && (
+          <Form.Description text="No genres available. Please check your API connection." />
+        )}
+      </Form>
+    </>
   );
 }

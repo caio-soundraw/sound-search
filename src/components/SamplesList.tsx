@@ -13,15 +13,19 @@ export function SamplesList({
   onNewSearch,
   selectedGenres,
   availableGenres,
+  searchBarAccessory,
+  navigationTitle: customNavigationTitle,
 }: {
   samples: Sample[];
   isLoading: boolean;
   onNewSearch: () => void;
   selectedGenres: string[];
   availableGenres: Record<string, string>;
+  searchBarAccessory?: React.ReactElement<React.ComponentProps<typeof List.Dropdown>>;
+  navigationTitle?: string;
 }) {
   const genreNames = selectedGenres.map((key) => availableGenres[key] || key).join(", ");
-  const navigationTitle = genreNames ? `Search Samples: ${genreNames}` : "Search Samples";
+  const navigationTitle = customNavigationTitle || (genreNames ? `Search Samples: ${genreNames}` : "Search Samples");
   const selectedSampleIdRef = useRef<string | null>(null);
   const [filePaths, setFilePaths] = useState<Record<string, string>>({});
   const [isPreparingFiles, setIsPreparingFiles] = useState(false);
@@ -134,6 +138,7 @@ export function SamplesList({
       if (selectedSample) {
         log.debug(`[audio] auto-playing selected sample: ${selectedSample.name}`);
         await playAudio(selectedSample.sample, selectedSample.id, selectedSample.name);
+        // Don't save to recents on auto-play - only save when explicitly playing via PlayStopAction
       }
     } catch (error) {
       log.debug(
@@ -147,7 +152,7 @@ export function SamplesList({
     <List
       isLoading={isLoading || isPreparingFiles}
       navigationTitle={navigationTitle}
-      searchBarAccessory={null}
+      searchBarAccessory={searchBarAccessory}
       onSelectionChange={handleSelectionChange}
       actions={
         <ActionPanel>
