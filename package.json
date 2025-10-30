@@ -25,6 +25,12 @@
       "title": "Search Samples",
       "description": "Search for samples",
       "mode": "view"
+    },
+    {
+      "name": "about-us",
+      "title": "About Us",
+      "description": "Learn about the contributors",
+      "mode": "view"
     }
   ],
   "tools": [
