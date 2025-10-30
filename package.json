@@ -74,6 +74,70 @@
           }
         ],
         "usedAsExample": true
+      },
+      {
+        "input": "@sound-search looking for ambient background music for my video",
+        "expected": [
+          {
+            "callsTool": {
+              "name": "ask-soundraw",
+              "arguments": {
+                "query": {
+                  "includes": "ambient"
+                }
+              }
+            }
+          }
+        ],
+        "usedAsExample": true
+      },
+      {
+        "input": "@sound-search rock background music",
+        "expected": [
+          {
+            "callsTool": {
+              "name": "ask-soundraw",
+              "arguments": {
+                "query": {
+                  "includes": "rock"
+                }
+              }
+            }
+          }
+        ],
+        "usedAsExample": true
+      },
+      {
+        "input": "@sound-search I want hip hop beats",
+        "expected": [
+          {
+            "callsTool": {
+              "name": "ask-soundraw",
+              "arguments": {
+                "query": {
+                  "includes": "hip hop"
+                }
+              }
+            }
+          }
+        ],
+        "usedAsExample": true
+      },
+      {
+        "input": "@sound-search I'm looking for cinematic music for my film",
+        "expected": [
+          {
+            "callsTool": {
+              "name": "ask-soundraw",
+              "arguments": {
+                "query": {
+                  "includes": "cinematic"
+                }
+              }
+            }
+          }
+        ],
+        "usedAsExample": true
       }
     ]
   },
