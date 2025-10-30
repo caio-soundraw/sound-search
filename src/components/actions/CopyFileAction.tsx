@@ -1,6 +1,6 @@
 import { Action, Icon, showToast, Toast, showHUD } from "@raycast/api";
 import { downloadAndCache } from "../../lib/cache";
-import { saveToDownloads, copyFileToClipboard } from "../../lib/file";
+import { saveToDownloads, copyFileToClipboard, saveFavoriteOrRecent } from "../../lib/file";
 import { stopAudio } from "../../lib/audio";
 import { Sample } from "../../lib/types";
 
@@ -28,6 +28,9 @@ export function CopyFileAction({ sample, onLoadingChange }: CopyFileActionProps)
 
       // Copy file reference to clipboard
       copyFileToClipboard(filePath);
+
+      // Track usage by adding to recents
+      await saveFavoriteOrRecent(sample, "recent");
 
       // Show success feedback
       showHUD(`Copied ${sample.name}`);

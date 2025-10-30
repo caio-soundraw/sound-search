@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { getPlaybackManager } from "./audio";
+import { getAllFavIds, getAllRecentIds, getAllFavoriteSamples, getAllRecentSamples } from "./file";
+import { useCachedPromise } from "@raycast/utils";
 
 /**
  * React hook to track playback state for a specific sample
@@ -23,4 +25,28 @@ export function usePlaybackState(sampleId: string): boolean {
   }, [sampleId]);
 
   return isPlaying;
+}
+
+export function useFavoritesRecents() {
+  const { data: favoriteSampleIds = [], mutate: mutateFavorites } = useCachedPromise(getAllFavIds);
+  const { data: recentSampleIds = [], mutate: mutateRecents } = useCachedPromise(getAllRecentIds);
+  const { data: favoriteSamples = [], mutate: mutateFavoriteSamples } = useCachedPromise(getAllFavoriteSamples);
+  const { data: recentSamples = [], mutate: mutateRecentSamples } = useCachedPromise(getAllRecentSamples);
+  
+  const mutateAll = async () => {
+    await mutateFavorites();
+    await mutateRecents();
+    await mutateFavoriteSamples();
+    await mutateRecentSamples();
+  };
+  
+  return { 
+    favoriteSampleIds, 
+    recentSampleIds, 
+    favoriteSamples,
+    recentSamples,
+    mutateFavorites, 
+    mutateRecents,
+    mutateAll
+  };
 }

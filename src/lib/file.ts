@@ -2,6 +2,8 @@ import * as fs from "fs";
 import { execSync } from "child_process";
 import { downloadAndCache } from "./cache";
 import { log } from "./log";
+import { LocalStorage } from "@raycast/api";
+import { Sample } from "./types";
 
 /**
  * Get file extension from Content-Type header or URL
@@ -239,4 +241,76 @@ export function cleanupOldTempFiles(tempDir: string = "/tmp", maxAgeMs: number =
   } catch {
     // Ignore cleanup errors overall
   }
+}
+
+export type LocalType = "favs" | "recent";
+
+function getKey(type: LocalType): string {
+  return `soundsearch-${type}`;
+}
+
+/**
+ * Get current favorite or recent samples
+ */
+export async function getFavoriteOrRecentSamples(type: LocalType): Promise<Sample[]> {
+  const data = await LocalStorage.getItem<string>(getKey(type));
+  if (!data) return [];
+  
+  try {
+    const samples: Sample[] = JSON.parse(data);
+    return Array.isArray(samples) ? samples.filter((s) => s?.id && s?.name && s?.sample) : [];
+  } catch {
+    return [];
+  }
+}
+
+/**
+ * Save the sample to favorites or recents
+ */
+export async function saveFavoriteOrRecent(sample: Sample, type: LocalType) {
+  const samples = await getFavoriteOrRecentSamples(type);
+  // Remove if already exists (to update and maintain order)
+  const filtered = samples.filter((s) => s.id !== sample.id);
+  // Add to front (most recent first)
+  const updated = [sample, ...filtered];
+  await LocalStorage.setItem(getKey(type), JSON.stringify(updated));
+}
+
+/**
+ * Remove the sample from favorites or recents
+ */
+export async function removeFavoriteOrRecent(sample: Sample, type: LocalType) {
+  const samples = await getFavoriteOrRecentSamples(type);
+  const filtered = samples.filter((s) => s.id !== sample.id);
+  await LocalStorage.setItem(getKey(type), JSON.stringify(filtered));
+}
+
+/**
+ * Get all Favorite IDs (alias for favorites)
+ */
+export async function getAllFavIds(): Promise<string[]> {
+  const samples = await getFavoriteOrRecentSamples("favs");
+  return samples.map((s) => s.id);
+}
+
+/**
+ * Get all Recent IDs (alias for recents)
+ */
+export async function getAllRecentIds(): Promise<string[]> {
+  const samples = await getFavoriteOrRecentSamples("recent");
+  return samples.map((s) => s.id);
+}
+
+/**
+ * Get all Favorite samples
+ */
+export async function getAllFavoriteSamples(): Promise<Sample[]> {
+  return getFavoriteOrRecentSamples("favs");
+}
+
+/**
+ * Get all Recent samples
+ */
+export async function getAllRecentSamples(): Promise<Sample[]> {
+  return getFavoriteOrRecentSamples("recent");
 }
