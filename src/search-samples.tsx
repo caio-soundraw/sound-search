@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { Form, ActionPanel, Action, showToast, Icon, Toast } from "@raycast/api";
+import { useState, useEffect, useRef } from "react";
+import { Form, ActionPanel, Action, showToast, Icon, Toast, LaunchProps } from "@raycast/api";
 import { useForm, useCachedPromise } from "@raycast/utils";
 import { searchSamples, getAvailableGenres, SoundrawAPIError } from "./lib/soundraw";
 import { Sample } from "./lib/types";
@@ -11,9 +11,16 @@ type Values = {
   genres: string[];
 };
 
-export default function Command() {
+type LaunchArguments = {
+  genres?: string; // Comma-separated string of genre keys
+};
+
+export default function Command(props: LaunchProps<{ arguments: LaunchArguments }>) {
+  // Parse comma-separated genres string into array
+  const launchGenresString = props.arguments?.genres || "";
+  const launchGenres = launchGenresString ? launchGenresString.split(",").filter((g) => g.trim().length > 0) : [];
   const [hasSearched, setHasSearched] = useState(false);
-  const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
+  const [selectedGenres, setSelectedGenres] = useState<string[]>(launchGenres);
 
   // Cleanup old temp files on command launch (older than 4 hours)
   useEffect(() => {
@@ -37,8 +44,12 @@ export default function Command() {
   });
 
   const availableGenres = genresData?.genres || {};
+  const hasAutoSubmittedRef = useRef(false);
 
   const { handleSubmit, itemProps } = useForm<Values>({
+    initialValues: {
+      genres: launchGenres,
+    },
     onSubmit: async (values) => {
       const { genres } = values;
 
@@ -79,6 +90,23 @@ export default function Command() {
       },
     },
   });
+
+  // Auto-submit if genres were provided via launch arguments
+  useEffect(() => {
+    if (
+      launchGenres.length > 0 &&
+      !hasSearched &&
+      !hasAutoSubmittedRef.current &&
+      Object.keys(availableGenres).length > 0
+    ) {
+      // Validate that all launch genres exist
+      const validGenres = launchGenres.filter((genre) => Object.keys(availableGenres).includes(genre));
+      if (validGenres.length > 0) {
+        hasAutoSubmittedRef.current = true;
+        handleSubmit({ genres: validGenres });
+      }
+    }
+  }, [launchGenres, hasSearched, availableGenres, handleSubmit]);
 
   const handleNewSearch = () => {
     setHasSearched(false);
