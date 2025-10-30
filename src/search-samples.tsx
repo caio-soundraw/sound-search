@@ -22,7 +22,7 @@ export default function Command(props: LaunchProps<{ arguments: LaunchArguments 
   // Parse comma-separated genres string into array
   const launchGenresString = props.arguments?.genres || "";
   const launchGenres = launchGenresString ? launchGenresString.split(",").filter((g) => g.trim().length > 0) : [];
-  
+
   const [hasSearched, setHasSearched] = useState(false);
   const [selectedGenres, setSelectedGenres] = useState<string[]>(launchGenres);
   const [searchSource, setSearchSource] = useState<SearchSource>("soundraw");
@@ -125,7 +125,7 @@ export default function Command(props: LaunchProps<{ arguments: LaunchArguments 
   let visibleSamples: Sample[] = samples;
   let sectionTitle = "Soundraw Samples";
   let isShowingLocalSamples = false;
-  
+
   if (searchSource === "favorites") {
     visibleSamples = favoriteSamples || [];
     sectionTitle = "Favorite Samples";
@@ -148,23 +148,11 @@ export default function Command(props: LaunchProps<{ arguments: LaunchArguments 
       }}
     >
       <List.Dropdown.Section>
-        <List.Dropdown.Item
-          title="Soundraw"
-          value="soundraw"
-          icon={{ source: "soundraw.png" }}
-        />
+        <List.Dropdown.Item title="Soundraw" value="soundraw" icon={{ source: "soundraw.png" }} />
       </List.Dropdown.Section>
       <List.Dropdown.Section>
-        <List.Dropdown.Item
-          title="Favorites"
-          value="favorites"
-          icon={{ source: Icon.Star, tintColor: Color.Yellow }}
-        />
-        <List.Dropdown.Item
-          title="Recent"
-          value="recents"
-          icon={{ source: Icon.Clock }}
-        />
+        <List.Dropdown.Item title="Favorites" value="favorites" icon={{ source: Icon.Star, tintColor: Color.Yellow }} />
+        <List.Dropdown.Item title="Recent" value="recents" icon={{ source: Icon.Clock }} />
       </List.Dropdown.Section>
     </List.Dropdown>
   );

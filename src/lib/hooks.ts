@@ -32,21 +32,21 @@ export function useFavoritesRecents() {
   const { data: recentSampleIds = [], mutate: mutateRecents } = useCachedPromise(getAllRecentIds);
   const { data: favoriteSamples = [], mutate: mutateFavoriteSamples } = useCachedPromise(getAllFavoriteSamples);
   const { data: recentSamples = [], mutate: mutateRecentSamples } = useCachedPromise(getAllRecentSamples);
-  
+
   const mutateAll = async () => {
     await mutateFavorites();
     await mutateRecents();
     await mutateFavoriteSamples();
     await mutateRecentSamples();
   };
-  
-  return { 
-    favoriteSampleIds, 
-    recentSampleIds, 
+
+  return {
+    favoriteSampleIds,
+    recentSampleIds,
     favoriteSamples,
     recentSamples,
-    mutateFavorites, 
+    mutateFavorites,
     mutateRecents,
-    mutateAll
+    mutateAll,
   };
 }

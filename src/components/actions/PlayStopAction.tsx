@@ -83,14 +83,12 @@ export function RecentActions({ sample }: { sample: Sample }) {
   }, [isRecent, sample, mutateAll]);
 
   // Only removal is a supported action for recents
-  return (
-    isRecent ? (
-      <Action
-        icon={Icon.Clock}
-        title="Remove from Recents"
-        onAction={removeRecent}
-        shortcut={{ modifiers: ["ctrl", "shift"], key: "r" }}
-      />
-    ) : null
-  );
+  return isRecent ? (
+    <Action
+      icon={Icon.Clock}
+      title="Remove from Recents"
+      onAction={removeRecent}
+      shortcut={{ modifiers: ["ctrl", "shift"], key: "r" }}
+    />
+  ) : null;
 }

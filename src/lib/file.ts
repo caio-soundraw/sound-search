@@ -255,7 +255,7 @@ function getKey(type: LocalType): string {
 export async function getFavoriteOrRecentSamples(type: LocalType): Promise<Sample[]> {
   const data = await LocalStorage.getItem<string>(getKey(type));
   if (!data) return [];
-  
+
   try {
     const samples: Sample[] = JSON.parse(data);
     return Array.isArray(samples) ? samples.filter((s) => s?.id && s?.name && s?.sample) : [];
