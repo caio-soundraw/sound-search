@@ -5,10 +5,12 @@
   "description": "Searches sounds",
   "icon": "extension-icon.png",
   "author": "clins1994",
+  "contributors": [
+    "perfectbase"
+  ],
   "owner": "tokyo-ai-hackathon",
   "platforms": [
-    "macOS",
-    "Windows"
+    "macOS"
   ],
   "categories": [
     "Fun",
@@ -19,10 +21,35 @@
   "license": "MIT",
   "commands": [
     {
-      "name": "search-sounds",
-      "title": "Search Sounds",
-      "description": "Searches sounds",
+      "name": "search-samples",
+      "title": "Search Samples",
+      "description": "Search for samples",
       "mode": "view"
+    }
+  ],
+  "tools": [
+    {
+      "name": "ask-soundraw",
+      "title": "Ask Soundraw",
+      "description": "Allows searching samples via prompt by automagically guessing which genres the user wants from the pool of possible genres"
+    }
+  ],
+  "preferences": [
+    {
+      "name": "soundrawToken",
+      "title": "API Token",
+      "description": "Your Soundraw API token",
+      "type": "password",
+      "placeholder": "8bf36ea4-6e85-4c46-814a-eb9c5676b03d",
+      "required": true
+    },
+    {
+      "name": "soundrawApiUrl",
+      "title": "API Url",
+      "description": "Your Soundraw API URL",
+      "type": "textfield",
+      "placeholder": "https://api.example.com/api/v1",
+      "required": true
     }
   ],
   "dependencies": {
