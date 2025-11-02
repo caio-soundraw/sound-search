@@ -25,12 +25,6 @@
       "title": "Search for Sounds",
       "description": "Search for sounds by genres",
       "mode": "view"
-    },
-    {
-      "name": "about-us",
-      "title": "About Us",
-      "description": "Learn about the contributors",
-      "mode": "view"
     }
   ],
   "tools": [
