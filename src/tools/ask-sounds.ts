@@ -1,6 +1,7 @@
 import { AI, open } from "@raycast/api";
 import { createDeeplink, DeeplinkType } from "@raycast/utils";
 import { getAvailableGenres, SoundrawAPIError } from "../lib/sounds/soundraw";
+import packageJson from "../../package.json";
 
 type Input = {
   /**
@@ -83,7 +84,7 @@ Available genre keys: ${JSON.stringify(genreList)}`;
     // Pass genres as comma-separated string since Raycast deeplinks don't support arrays directly
     const deeplink = createDeeplink({
       type: DeeplinkType.Extension,
-      ownerOrAuthorName: "clins1994",
+      ownerOrAuthorName: packageJson.author,
       extensionName: "sound-search",
       command: "search-sounds",
       arguments: {
