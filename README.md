@@ -33,6 +33,11 @@ Special thanks to Ravi ([@perfectbase on GitHub](https://github.com/perfectbase)
 
 <img src="tokyo-ai-hackathon.jpeg" alt="Tokyo AI Hackathon" style="max-width: 100%; width: 100%;" />
 
+## Repository
+
+- Origin PR: https://github.com/raycast/extensions/pull/22590
+- Origin repo: https://github.com/clins1994/sound-search
+
 ## License
 
 Distributed under the MIT License
