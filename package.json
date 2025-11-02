@@ -19,6 +19,7 @@
     "Productivity"
   ],
   "license": "MIT",
+  "type": "module",
   "commands": [
     {
       "name": "search-sounds",
