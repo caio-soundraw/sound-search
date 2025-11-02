@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Form, ActionPanel, Action, showToast, Icon, Toast, LaunchProps, Color, List } from "@raycast/api";
 import { useForm, useCachedPromise } from "@raycast/utils";
-import { searchSamples, getAvailableGenres, SoundrawAPIError } from "./lib/soundraw";
+import { searchSamples, getAvailableGenres, SoundrawAPIError } from "./lib/sounds/soundraw";
 import { Sample } from "./lib/types";
 import { cleanupPlayback } from "./lib/audio";
 import { SamplesList } from "./components/SamplesList";

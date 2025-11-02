@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, type ComponentProps } from "react";
 import { List, Icon, ActionPanel, Action } from "@raycast/api";
 import { Sample } from "../lib/types";
 import { playAudio, stopAudio, cleanupPlayback } from "../lib/audio";
@@ -21,7 +21,7 @@ export function SamplesList({
   onNewSearch: () => void;
   selectedGenres: string[];
   availableGenres: Record<string, string>;
-  searchBarAccessory?: React.ReactElement<React.ComponentProps<typeof List.Dropdown>>;
+  searchBarAccessory?: ComponentProps<typeof List>["searchBarAccessory"];
   navigationTitle?: string;
 }) {
   const genreNames = selectedGenres.map((key) => availableGenres[key] || key).join(", ");

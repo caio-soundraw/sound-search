@@ -1,4 +1,4 @@
-import { SearchSamplesRequest, SearchSamplesResponse } from "./types";
+import { SearchSamplesRequest, SearchSamplesResponse } from "../types";
 import { getPreferenceValues } from "@raycast/api";
 
 const { soundrawToken, soundrawApiUrl } = getPreferenceValues<Preferences>();

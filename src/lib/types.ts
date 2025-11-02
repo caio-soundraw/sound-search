@@ -1,11 +1,11 @@
-export type SoundrawConfig = {
+export type SoundSearchConfig = {
   token: string;
   apiBaseUrl: string;
   createdAt: string;
 };
 
 export type StoredState = {
-  soundrawConfig?: SoundrawConfig;
+  soundrawConfig?: SoundSearchConfig;
 };
 
 export type Sample = {
