@@ -1,5 +1,5 @@
 import * as fs from "fs";
-import { execSync } from "child_process";
+import { spawnSync } from "child_process";
 import { downloadAndCache } from "./cache";
 import { log } from "./log";
 import { LocalStorage } from "@raycast/api";
@@ -102,14 +102,32 @@ export function saveToDownloads(
  * @param filePath The file path to copy
  */
 export function copyFileToClipboard(filePath: string): void {
-  // Sanitize path for AppleScript (escape special characters)
-  const sanitizedPath = filePath.replace(/"/g, '\\"');
-
   try {
-    execSync(`osascript -e 'set the clipboard to (POSIX file "${sanitizedPath}")'`);
-  } catch {
+    // Validate that the path exists and is an absolute path to prevent injection
+    if (!fs.existsSync(filePath) || !filePath.startsWith("/")) {
+      log.debug(`[file] invalid file path for clipboard: ${filePath}`);
+      return;
+    }
+
+    // Use spawnSync with separate arguments to prevent command injection
+    // Properly escape the path for AppleScript: escape backslashes first, then quotes
+    // This prevents injection through path manipulation
+    const escapedPath = filePath.replace(/\\/g, "\\\\").replace(/"/g, '\\"');
+    const appleScript = `set the clipboard to (POSIX file "${escapedPath}")`;
+
+    const result = spawnSync("osascript", ["-e", appleScript], {
+      stdio: "pipe",
+      encoding: "utf8",
+    });
+
+    if (result.error || result.status !== 0) {
+      log.debug(
+        `[file] failed to copy to clipboard: ${result.error?.message || result.stderr || "Unknown error"}`,
+      );
+    }
+  } catch (error) {
     // File was written successfully even if clipboard fails
-    // We can optionally throw here if clipboard is critical
+    log.debug(`[file] clipboard copy error: ${error instanceof Error ? error.message : "Unknown error"}`);
   }
 }
 
