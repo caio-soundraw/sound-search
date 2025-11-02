@@ -31,7 +31,7 @@ Created by Caio Lins ([@clins1994 on GitHub](https://github.com/clins1994)).
 
 Special thanks to Ravi ([@perfectbase on GitHub](https://github.com/perfectbase)), who helped me implement the core features during the [Tokyo AI Hackathon](https://raycast.connpass.com/event/369928/) organized by [Raycast](https://github.com/raycast), [Anthropic](https://github.com/anthropics), [Vercel](https://github.com/vercel), and [Supabase](https://github.com/supabase) on October 30th, 2025.
 
-<img src="assets/tokyo-ai-hackathon.jpeg" alt="Tokyo AI Hackathon" style="max-width: 100%; width: 100%;" />
+<img src="tokyo-ai-hackathon.jpeg" alt="Tokyo AI Hackathon" style="max-width: 100%; width: 100%;" />
 
 ## License
 
