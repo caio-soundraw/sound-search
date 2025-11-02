@@ -121,9 +121,7 @@ export function copyFileToClipboard(filePath: string): void {
     });
 
     if (result.error || result.status !== 0) {
-      log.debug(
-        `[file] failed to copy to clipboard: ${result.error?.message || result.stderr || "Unknown error"}`,
-      );
+      log.debug(`[file] failed to copy to clipboard: ${result.error?.message || result.stderr || "Unknown error"}`);
     }
   } catch (error) {
     // File was written successfully even if clipboard fails
