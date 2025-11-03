@@ -39,96 +39,100 @@
     "instructions": "Use the ask-sounds tool to search for audio samples. When a user asks for music, sounds, or samples, interpret their natural language query and use the tool to find matching samples. The tool automatically maps queries to appropriate genres from the available pool.",
     "evals": [
       {
-        "input": "@sound-search find me some energetic electronic music",
-        "expected": [
+        "input" : "@sound-search find me some energetic electronic music",
+        "mocks" : {
+          "ask-sounds" : {
+            "message" : "drum-bass,house,techno,trap",
+            "success" : true
+          }
+        },
+        "expected" : [
           {
-            "callsTool": {
-              "name": "ask-sounds",
-              "arguments": {
-                "query": {
-                  "includes": "energetic"
-                }
-              }
+            "callsTool" : {
+              "arguments" : {
+                "query" : "energetic electronic music"
+              },
+              "name" : "ask-sounds"
             }
           }
         ],
         "usedAsExample": true
       },
       {
-        "input": "@sound-search I need jazz tracks",
-        "expected": [
+        "input" : "@sound-search looking for ambient background music for my video",
+        "mocks" : {
+          "ask-sounds" : {
+            "message" : "ambient,lo-fi",
+            "success" : true
+          }
+        },
+        "expected" : [
           {
-            "callsTool": {
-              "name": "ask-sounds",
-              "arguments": {
-                "query": {
-                  "includes": "jazz"
-                }
-              }
+            "callsTool" : {
+              "arguments" : {
+                "query" : "ambient background music"
+              },
+              "name" : "ask-sounds"
             }
           }
         ],
         "usedAsExample": true
       },
       {
-        "input": "@sound-search looking for ambient background music for my video",
-        "expected": [
+        "input" : "@sound-search rock background music",
+        "mocks" : {
+          "ask-sounds" : {
+            "message" : "rock",
+            "success" : true
+          }
+        },
+        "expected" : [
           {
-            "callsTool": {
-              "name": "ask-sounds",
-              "arguments": {
-                "query": {
-                  "includes": "ambient"
-                }
-              }
+            "callsTool" : {
+              "arguments" : {
+                "query" : "rock background music"
+              },
+              "name" : "ask-sounds"
             }
           }
         ],
         "usedAsExample": true
       },
       {
-        "input": "@sound-search rock background music",
-        "expected": [
+        "input" : "@sound-search give me some hip hop type beats",
+        "mocks" : {
+          "ask-sounds" : {
+            "message" : "hip-hop,trap,lo-fi",
+            "success" : true
+          }
+        },
+        "expected" : [
           {
-            "callsTool": {
-              "name": "ask-sounds",
-              "arguments": {
-                "query": {
-                  "includes": "rock"
-                }
-              }
+            "callsTool" : {
+              "arguments" : {
+                "query" : "hip hop type beats"
+              },
+              "name" : "ask-sounds"
             }
           }
         ],
         "usedAsExample": true
       },
       {
-        "input": "@sound-search I want hip hop beats",
-        "expected": [
-          {
-            "callsTool": {
-              "name": "ask-sounds",
-              "arguments": {
-                "query": {
-                  "includes": "hip hop"
-                }
-              }
-            }
+        "input" : "@sound-search i'm looking for cinematic music for my film",
+        "mocks" : {
+          "ask-sounds" : {
+            "message" : "ambient,orchestra",
+            "success" : true
           }
-        ],
-        "usedAsExample": true
-      },
-      {
-        "input": "@sound-search I'm looking for cinematic music for my film",
-        "expected": [
+        },
+        "expected" : [
           {
-            "callsTool": {
-              "name": "ask-sounds",
-              "arguments": {
-                "query": {
-                  "includes": "cinematic"
-                }
-              }
+            "callsTool" : {
+              "arguments" : {
+                "query" : "cinematic music"
+              },
+              "name" : "ask-sounds"
             }
           }
         ],
