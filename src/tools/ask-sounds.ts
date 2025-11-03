@@ -34,7 +34,7 @@ Analyze it and determine which genres from the available genre list best match t
 You must respond with a plain, comma-separated list of genres that best match the user's request and are available in the genre list.
 
 Rules:
-1. Ouput only genres from the available genre list: ${genreList.join(",")}. Do not use any other genres.
+1. Output only genres from the available genre list: ${genreList.join(",")}. Do not use any other genres.
 2. When there are genres, return only a comma-separated list of genres, e.g. "acoustic,drill".
 3. When there are no genres, return an empty string e.g. "".`;
 
