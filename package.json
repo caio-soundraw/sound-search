@@ -150,7 +150,7 @@
     },
     {
       "name": "soundrawApiUrl",
-      "title": "API Url",
+      "title": "API URL",
       "description": "Your Soundraw API URL",
       "type": "textfield",
       "placeholder": "https://api.example.com/api/v1",
